@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>IT Support Portal</title>
+    <meta name="description" content="Centralized access to all IT internal applications">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="IT Portal">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --primary-gradient: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --tertiary-gradient: linear-gradient(135deg, #5ee7df 0%, #b490ca 100%);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        .blob {
+            position: absolute;
+            filter: blur(90px);
+            z-index: -1;
+            opacity: 0.6;
+            animation: float 10s infinite alternate ease-in-out;
+        }
+        .blob-1 {
+            top: -10%; left: -10%;
+            width: 500px; height: 500px;
+            background: #4facfe;
+        }
+        .blob-2 {
+            bottom: -10%; right: -10%;
+            width: 600px; height: 600px;
+            background: #8b5cf6;
+            animation-delay: -5s;
+        }
+        .blob-3 {
+            top: 40%; left: 40%;
+            width: 400px; height: 400px;
+            background: #0ea5e9;
+            opacity: 0.3;
+            animation-duration: 15s;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(50px, 50px) scale(1.1); }
+        }
+
+        header {
+            width: 100%;
+            padding: 60px 20px 40px;
+            text-align: center;
+            z-index: 1;
+            animation: fadeInDown 1s ease-out forwards;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-bottom: 15px;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            width: 90%;
+            max-width: 1200px;
+            padding: 20px 0 80px;
+            z-index: 1;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 40px 30px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text-primary);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease-out forwards;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .card:nth-child(1) { animation-delay: 0.2s; }
+        .card:nth-child(2) { animation-delay: 0.4s; }
+        .card:nth-child(3) { animation-delay: 0.6s; }
+
+        .card:hover {
+            transform: translateY(-15px);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: var(--primary-gradient);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+            transform-origin: left;
+        }
+        .card:nth-child(2)::before { background: var(--secondary-gradient); }
+        .card:nth-child(3)::before { background: var(--tertiary-gradient); }
+        .card:hover::before { transform: scaleX(1); }
+
+        .icon-wrapper {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 25px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.4s ease;
+        }
+
+        .card:hover .icon-wrapper {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .card:nth-child(1) .icon-wrapper i { color: #4facfe; }
+        .card:nth-child(2) .icon-wrapper i { color: #f093fb; }
+        .card:nth-child(3) .icon-wrapper i { color: #5ee7df; }
+
+        .card h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        .card p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 30px;
+            flex-grow: 1;
+        }
+
+        .btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--primary-gradient);
+            z-index: -1;
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        }
+        .card:nth-child(2) .btn::after { background: var(--secondary-gradient); }
+        .card:nth-child(3) .btn::after { background: var(--tertiary-gradient); }
+
+        .card:hover .btn {
+            border-color: transparent;
+            color: #fff;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        .card:hover .btn::after { opacity: 1; }
+        .card:hover .btn i { transform: translateX(4px); }
+
+        .btn i {
+            transition: transform 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .install-bar {
+            position: fixed;
+            left: 50%;
+            bottom: calc(20px + env(safe-area-inset-bottom));
+            transform: translate(-50%, 140%);
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            max-width: calc(100% - 32px);
+            padding: 12px 14px 12px 20px;
+            border-radius: 50px;
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            font-size: 0.9rem;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .install-bar.show { transform: translate(-50%, 0); }
+        .install-bar span { color: var(--text-secondary); }
+        .install-bar button {
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #0f172a;
+            background: var(--primary-gradient);
+            border: none;
+            border-radius: 50px;
+            padding: 9px 18px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .install-bar .dismiss {
+            background: transparent;
+            color: var(--text-secondary);
+            padding: 6px 10px;
+            font-size: 1rem;
+        }
+
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            header h1 { font-size: 2.2rem; }
+            .container { grid-template-columns: 1fr; padding-top: 10px; }
+            .card { padding: 30px 20px; }
+        }
+
+        @media (hover: none) {
+            .card:hover { transform: none; }
+            .card:active { background: rgba(255, 255, 255, 0.07); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+
+    <header>
+        <h1>IT Support Portal</h1>
+        <p>Centralized access to all IT internal applications. Select a module below to get started.</p>
+    </header>
+
+    <div class="container">
+        <a href="https://memoblanco74.github.io/Scrap-and-spare-parts-hub/" target="_blank" rel="noopener" class="card">
+            <div>
+                <div class="icon-wrapper">
+                    <i class="fas fa-microchip"></i>
+                </div>
+                <h2>Scrap &amp; Spare Parts</h2>
+                <p>Track hardware lifecycles, predict parts consumption, and manage inventory. Easily identify and salvage reusable components from scrapped devices to optimize IT resources.</p>
+            </div>
+            <span class="btn">Launch App <i class="fas fa-arrow-right"></i></span>
+        </a>
+
+        <a href="https://script.google.com/macros/s/AKfycbx1T1gG34V0Hs7EvJ9bjbOAlol8vDOAf4M-Yr4FDBvifFuSh75ici8vaTktsMRHjjA3Tg/exec" target="_blank" rel="noopener" class="card">
+            <div>
+                <div class="icon-wrapper">
+                    <i class="fas fa-network-wired"></i>
+                </div>
+                <h2>Knowledge Share</h2>
+                <p>Your unified hub to organize and share IT knowledge. Access advanced file management and essential daily tools, including warranty checkers and printer databases.</p>
+            </div>
+            <span class="btn">Launch App <i class="fas fa-arrow-right"></i></span>
+        </a>
+
+        <a href="https://script.google.com/macros/s/AKfycbyvxbHB1smckp-b1Bt0FgrOk8WFc3s5eq4s5KrbUxcClsllzTg4hzC7okDTZrTCoZIRig/exec" target="_blank" rel="noopener" class="card">
+            <div>
+                <div class="icon-wrapper">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h2>Account Management</h2>
+                <p>Discover and track accounts across all sites. Instantly view specific software setups and pinpoint device locations using detailed, interactive floor plans.</p>
+            </div>
+            <span class="btn">Launch App <i class="fas fa-arrow-right"></i></span>
+        </a>
+    </div>
+
+    <div class="install-bar" id="installBar" role="dialog" aria-live="polite">
+        <span id="installText">Install this portal as an app</span>
+        <button type="button" id="installBtn">Install</button>
+        <button type="button" class="dismiss" id="installDismiss" aria-label="Dismiss">&times;</button>
+    </div>
+
+    <script>
+        (function () {
+            var bar = document.getElementById('installBar');
+            var text = document.getElementById('installText');
+            var btn = document.getElementById('installBtn');
+            var dismiss = document.getElementById('installDismiss');
+            var deferredPrompt = null;
+            var KEY = 'itPortalInstallDismissed';
+
+            function isStandalone() {
+                return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+            }
+
+            function wasDismissed() {
+                try { return localStorage.getItem(KEY) === '1'; } catch (e) { return false; }
+            }
+
+            function remember() {
+                try { localStorage.setItem(KEY, '1'); } catch (e) {}
+            }
+
+            function showBar() {
+                if (isStandalone() || wasDismissed()) return;
+                bar.classList.add('show');
+            }
+
+            function hideBar() {
+                bar.classList.remove('show');
+            }
+
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function () {
+                    navigator.serviceWorker.register('sw.js').catch(function () {});
+                });
+            }
+
+            window.addEventListener('beforeinstallprompt', function (e) {
+                e.preventDefault();
+                deferredPrompt = e;
+                text.textContent = 'Install this portal as an app';
+                btn.style.display = '';
+                showBar();
+            });
+
+            btn.addEventListener('click', function () {
+                if (!deferredPrompt) return;
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then(function () {
+                    deferredPrompt = null;
+                    hideBar();
+                });
+            });
+
+            dismiss.addEventListener('click', function () {
+                remember();
+                hideBar();
+            });
+
+            window.addEventListener('appinstalled', function () {
+                deferredPrompt = null;
+                hideBar();
+            });
+
+            var ua = window.navigator.userAgent;
+            var isIOS = /iphone|ipad|ipod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+            if (isIOS && !isStandalone()) {
+                text.textContent = 'To install: tap Share, then Add to Home Screen';
+                btn.style.display = 'none';
+                setTimeout(showBar, 1500);
+            }
+        })();
+    </script>
+
+</body>
+</html>
